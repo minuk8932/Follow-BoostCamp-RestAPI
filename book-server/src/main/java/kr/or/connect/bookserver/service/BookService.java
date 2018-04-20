@@ -1,7 +1,9 @@
 package kr.or.connect.bookserver.service;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.stereotype.Service;
 
@@ -17,15 +19,23 @@ import kr.or.connect.domain.Book;
 
 @Service
 public class BookService {
+	// Book 데이터는 BookService에서 ConcurrentHashMap에 저장
+	private ConcurrentMap<Integer, Book> repo = new ConcurrentHashMap<>();
+	private AtomicInteger maxId  = new AtomicInteger(0);
 	
 	public Book findById(Integer id) {
-		return new Book(1, "자바 이렇게 공부하자", "김자바", 300);
+		return repo.get(id);
 	}
 	
 	public Collection<Book> findAll(){
-		return Arrays.asList(
-			new Book(1, "네이버 네비 좋아요", "김광근", 300),
-			new Book(2, "HTTP 완벽 이해하기", "김명호", 300)
-		);
+		return repo.values();
+	}
+	
+	public Book create(Book book) {
+		Integer id = maxId.addAndGet(1);
+		book.setId(id);
+		repo.put(id, book);
+		
+		return book;
 	}
 }
