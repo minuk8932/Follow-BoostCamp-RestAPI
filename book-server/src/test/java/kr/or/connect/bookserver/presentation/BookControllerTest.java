@@ -44,4 +44,24 @@ public class BookControllerTest {
 		.andExpect(jsonPath("$.author").value("유할발라리"));
 	}
  
+	@Test
+	public void shouldUpdate() throws Exception{
+		String requestBody = "{\"title\":\"사피엔스\", \"author\":\"유발하라리\"}";
+		
+		mvc.perform(
+				put("/api/books/1")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(requestBody)
+				)
+				.andExpect(status().isNoContent());
+	}
+	
+	@Test
+	public void shouldDelete() throws Exception{
+		mvc.perform(
+				delete("/api/books/1")
+					.contentType(MediaType.APPLICATION_JSON)
+				)
+				.andExpect(status().isNoContent());
+	}
 }
