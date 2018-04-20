@@ -1,6 +1,9 @@
 package kr.or.connect.bookserver.persistence;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
+
+import java.util.List;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Test;
@@ -80,5 +83,11 @@ public class BookDaoTest {
 		assertThat(affected, CoreMatchers.is(1));
 		Book updated = dao.selectById(id);
 		assertThat(updated.getTitle(), CoreMatchers.is("네이버 자바2"));
+	}
+	
+	@Test
+	public void shouldSelectAll() {
+		List<Book> allBooks = dao.selectAll();
+		assertThat(allBooks, CoreMatchers.is(notNullValue()));
 	}
 }
