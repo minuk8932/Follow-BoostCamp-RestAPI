@@ -23,19 +23,29 @@ public class BookService {
 	private ConcurrentMap<Integer, Book> repo = new ConcurrentHashMap<>();
 	private AtomicInteger maxId  = new AtomicInteger(0);
 	
-	public Book findById(Integer id) {
+	public Book findById(Integer id) {		// id를 통한 해당 book read
 		return repo.get(id);
 	}
 	
-	public Collection<Book> findAll(){
+	public Collection<Book> findAll(){		// book 리스트 전체 read
 		return repo.values();
 	}
 	
-	public Book create(Book book) {
+	public Book create(Book book) {			// book 생성
 		Integer id = maxId.addAndGet(1);
 		book.setId(id);
 		repo.put(id, book);
 		
 		return book;
+	}
+	
+	public boolean update(Book book) {			// put으로 내용을 수정하고, 내용이 제대로 수정되었는지 진리값 반환
+		Book old = repo.put(book.getId(), book);
+		return old != null;
+	}
+	
+	public boolean delete(Integer id) {			// remove로 내용 삭제 후, 내용이 제대로 삭제되었는지 진리값 반환
+		Book old = repo.remove(id);
+		return old != null;
 	}
 }
