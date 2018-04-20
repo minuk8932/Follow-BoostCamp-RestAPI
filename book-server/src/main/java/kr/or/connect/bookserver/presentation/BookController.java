@@ -4,9 +4,11 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -48,5 +50,18 @@ public class BookController {
 	@ResponseStatus(HttpStatus.CREATED)		// HTTP 응답의 상태 코드
 	Book create(@RequestBody Book book) {	// 응답 본문으로 부터 추출된 값을 파라미터로 넣을 것임을 알림
 		return service.create(book);			// HTTP 응답의 본문은 입력된 book 객체를 JSON으로 다시 반환
+	}
+	
+	@PutMapping("/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	void update(@PathVariable Integer id, @RequestBody Book book) {
+		book.setId(id);
+		service.update(book);
+	}
+	
+	@DeleteMapping("/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	void delete(@PathVariable Integer id) {
+		service.delete(id);
 	}
 }
