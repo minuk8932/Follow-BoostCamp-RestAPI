@@ -1,6 +1,6 @@
 package kr.or.connect.domain;
 
-public class Book {
+public class Book {	
 	private Integer id;
 	private String title;
 	private String author;

@@ -2,6 +2,7 @@ package kr.or.connect.bookserver.persistence;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -29,12 +30,9 @@ public class BookDao {
 	private static final String COUNT_BOOK = "SELECT COUNT(*) FROM book";
 	private static final String SELECT_BY_ID = "SELECT id, title, author, pages FROM book where id = :id"; 	// book 테이블을 id로 조회
 	private static final String DELETE_BY_ID = "DELETE FROM book WHERE id= :id";		// 삭제 쿼리
-	private static final String UPDATE =
-			"UPDATE book SET\n"
-			+ "title = :title,"
-			+ "author = :author,"
-			+ "pages = :pages\n"
-			+ "WHERE id = :id";
+	private static final String UPDATE = "UPDATE book SET\n" + "title = :title," + "author = :author,"
+											+ "pages = :pages\n" + "WHERE id = :id";
+	private static final String SELECT_ALL = "SELECT id, title, author, pages FROM book";	// 모든 항목 조회 쿼리 상수
 	
 	private NamedParameterJdbcTemplate jdbc;
 	private SimpleJdbcInsert insertAction;
@@ -91,5 +89,10 @@ public class BookDao {
 	public int update(Book book) {											// update
 		SqlParameterSource params = new BeanPropertySqlParameterSource(book);
 		return jdbc.update(UPDATE, params);
+	}
+	
+	public List<Book> selectAll(){
+		Map<String, Object> params = Collections.emptyMap();
+		return jdbc.query(SELECT_ALL, params, rowMapper);
 	}
 }
