@@ -53,14 +53,14 @@ public class BookController {
 	}
 	
 	@PutMapping("/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	void update(@PathVariable Integer id, @RequestBody Book book) {
+	@ResponseStatus(HttpStatus.NO_CONTENT)	// HTTP 요청 응답은 NO_CONTENT(204)
+	void update(@PathVariable Integer id, @RequestBody Book book) {		// 파라미터는 JSON을 요청 본문(Request body)으로 받음
 		book.setId(id);
 		service.update(book);
 	}
 	
 	@DeleteMapping("/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@ResponseStatus(HttpStatus.NO_CONTENT)	// HTTP 요청 응답은 NO_CONTENT(204)
 	void delete(@PathVariable Integer id) {
 		service.delete(id);
 	}
