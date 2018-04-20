@@ -19,6 +19,8 @@ import kr.or.connect.domain.Book;
  * 
  * @author minchoba
  * BookController class
+ * GetMapping: read api
+ * PostMapping: input api
  * 
  */
 
