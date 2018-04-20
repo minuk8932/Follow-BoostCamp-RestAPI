@@ -2,6 +2,8 @@ package kr.or.connect.bookserver.presentation;
 
 import java.util.Collection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,6 +32,7 @@ import kr.or.connect.domain.Book;
 @RequestMapping("/api/books")					// 모든 메서드에 공통적인 부분을 따로 빼줌
 public class BookController {
 	private final BookService service;
+	private final Logger log = LoggerFactory.getLogger(BookController.class);
 	
 	@Autowired
 	public BookController(BookService service) {		// BookService 클래스 가져오기
@@ -49,7 +52,9 @@ public class BookController {
 	@PostMapping								// post 요청으로 받을 주소 지정
 	@ResponseStatus(HttpStatus.CREATED)		// HTTP 응답의 상태 코드
 	Book create(@RequestBody Book book) {	// 응답 본문으로 부터 추출된 값을 파라미터로 넣을 것임을 알림
-		return service.create(book);			// HTTP 응답의 본문은 입력된 book 객체를 JSON으로 다시 반환
+		Book newBook = service.create(book);
+		log.info("book create : {}", newBook);
+		return book;			// HTTP 응답의 본문은 입력된 book 객체를 (JSON으로 다시) 반환
 	}
 	
 	@PutMapping("/{id}")
